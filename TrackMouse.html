@@ -1,6 +1,20 @@
 
 <html>
-
+<head>
+<style>
+h1 {
+    color:blue;
+    font-family:verdana;
+    font-size:300%;
+}
+p  {
+    font-family:verdana;
+    font-size:2000%;
+    font-weight: 900;
+    font-style: italic;
+}
+</style>
+</head>
 <body>
 
 <!-- Part One:
@@ -9,11 +23,15 @@ and "MouseY".  Note in the getMouseXY() function how fields
 are addressed, thus: document.FormName.FieldName.value
 //-->
 
-<form name="Show">
+<!--<form name="Show">
 <input type="text" name="MouseX" value="0" size="4"> X<br>
 <input type="text" name="MouseY" value="0" size="4"> Y<br>
-<input type="text" name="RGBvalue" value="0" size="8"> RGB<br>
+<input type="text" name="RGBvalue" value="0" size="8"> #RGB <br>
 </form>
+-->
+<p id="RGB"></p>
+
+
 
 <!-- Part Two:
 Use JavaScript ver 1.2 so older browsers ignore the script.
@@ -66,16 +84,6 @@ function getMouseXY(e) {
   // catch possible negative values in NS4
   if (tempX < 0){tempX = 0}
   if (tempY < 0){tempY = 0}  
-  // show the position values in the form named Show
-  // in the text fields named MouseX and MouseY
-  
-  document.Show.MouseX.value = tempX
-  document.Show.MouseY.value = tempY
-  //document.Show.MouseXY.value = MaxY //(tempX * tempY).toString(16);
-  
-  Rvalue = Math.round(tempX / MaxX * 255) % 256
-  Gvalue = Math.round(tempY / MaxY * 255) % 256
-  Bvalue = Math.round((Rvalue + (255-Gvalue))/2) % 256
 
   if (tempX <= MaxX) {
 		Rvalue = Math.round(tempX / MaxX * 255) % 256
@@ -91,9 +99,14 @@ function getMouseXY(e) {
   
   Bvalue = Math.round(((255-Rvalue) + (255-Gvalue))/2) % 256
   RGBstring = RGB2HTML(dec2hex(Rvalue), dec2hex(Gvalue), dec2hex(Bvalue))
-
-  document.Show.RGBvalue.value = RGBstring;
+  var d = 20;
+  var RBBText = RGB2HTML(dec2hex(Rvalue-d), dec2hex(Gvalue-d), dec2hex(Bvalue-d))
+  
   document.bgColor=RGBstring;
+  document.getElementById("RGB").style.color = RBBText;
+ 
+  document.getElementById("RGB").innerHTML = RGBstring;
+
   return true
 }
 
