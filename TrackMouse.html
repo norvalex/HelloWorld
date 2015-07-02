@@ -1,5 +1,6 @@
 
 <html>
+
 <body>
 
 <!-- Part One:
@@ -76,7 +77,6 @@ function getMouseXY(e) {
   Gvalue = Math.round(tempY / MaxY * 255) % 256
   Bvalue = Math.round((Rvalue + (255-Gvalue))/2) % 256
 
-
   if (tempX <= MaxX) {
 		Rvalue = Math.round(tempX / MaxX * 255) % 256
   } else {
@@ -89,7 +89,7 @@ function getMouseXY(e) {
   		Gvalue = 255
   }
   
-  Bvalue = Math.round((Rvalue + (255-Gvalue))/2) % 256
+  Bvalue = Math.round(((255-Rvalue) + (255-Gvalue))/2) % 256
   RGBstring = RGB2HTML(dec2hex(Rvalue), dec2hex(Gvalue), dec2hex(Bvalue))
 
   document.Show.RGBvalue.value = RGBstring;
