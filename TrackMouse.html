@@ -1,0 +1,119 @@
+
+<html>
+<body>
+
+<!-- Part One:
+Set up a form named "Show" with text fields named "MouseX"
+and "MouseY".  Note in the getMouseXY() function how fields
+are addressed, thus: document.FormName.FieldName.value
+//-->
+
+<form name="Show">
+<input type="text" name="MouseX" value="0" size="4"> X<br>
+<input type="text" name="MouseY" value="0" size="4"> Y<br>
+<input type="text" name="RGBvalue" value="0" size="8"> RGB<br>
+</form>
+
+<!-- Part Two:
+Use JavaScript ver 1.2 so older browsers ignore the script.
+The <script> must be *after* the <form> -- since the form
+and fields must exist *prior* to being called in the script.
+//-->
+
+<script language="JavaScript">
+<!--
+
+// Detect if the browser is IE or not.
+// If it is not IE, we assume that the browser is NS.
+var IE = document.all?true:false
+
+// If NS -- that is, !IE -- then set up for mouse capture
+if (!IE) document.captureEvents(Event.MOUSEMOVE)
+
+// Set-up to use getMouseXY function onMouseMove
+document.onmousemove = getMouseXY;
+
+// Temporary variables to hold mouse x-y pos.s
+var tempX = 0
+var tempY = 0
+
+var Rvalue = 0
+var Gvalue = 0
+var Bvalue = 0
+var RGBvalue = 0
+var MaxY = window.screen.availHeight
+var MaxX = window.screen.availWidth
+
+var RHex = 0
+var GHex = 0
+var BHex = 0
+var RGBHex = ""
+
+var RGBtemp = ""
+var RGBstring = ""
+
+// Main function to retrieve mouse x-y pos.s
+
+function getMouseXY(e) {
+  if (IE) { // grab the x-y pos.s if browser is IE
+    tempX = event.clientX + document.body.scrollLeft
+    tempY = event.clientY + document.body.scrollTop
+  } else {  // grab the x-y pos.s if browser is NS
+    tempX = e.pageX
+    tempY = e.pageY
+  }  
+  // catch possible negative values in NS4
+  if (tempX < 0){tempX = 0}
+  if (tempY < 0){tempY = 0}  
+  // show the position values in the form named Show
+  // in the text fields named MouseX and MouseY
+  
+  document.Show.MouseX.value = tempX
+  document.Show.MouseY.value = tempY
+  //document.Show.MouseXY.value = MaxY //(tempX * tempY).toString(16);
+  
+  Rvalue = Math.round(tempX / MaxX * 255) % 256
+  Gvalue = Math.round(tempY / MaxY * 255) % 256
+  Bvalue = Math.round((Rvalue + (255-Gvalue))/2) % 256
+
+
+  if (tempX <= MaxX) {
+		Rvalue = Math.round(tempX / MaxX * 255) % 256
+  } else {
+		Rvalue = 255
+  }
+  
+  if (tempY <= MaxY) {
+  		Gvalue = Math.round(tempY / MaxY * 255) % 256
+  } else {
+  		Gvalue = 255
+  }
+  
+  Bvalue = Math.round((Rvalue + (255-Gvalue))/2) % 256
+  RGBstring = RGB2HTML(dec2hex(Rvalue), dec2hex(Gvalue), dec2hex(Bvalue))
+
+  document.Show.RGBvalue.value = RGBstring;
+  document.bgColor=RGBstring;
+  return true
+}
+
+function RGB2HTML(red, green, blue)
+{
+    return '#' + red.toString(16) +
+           green.toString(16) +
+           blue.toString(16);
+}
+
+function dec2hex(i)
+{
+  var result = "00";
+  if      (i >= 0    && i <= 15)    { result = "0" + i.toString(16).toUpperCase(); }
+  else if (i >= 16   && i <= 255)   { result =   	 i.toString(16).toUpperCase(); }
+  return result
+}
+
+//-->
+</script>
+</body>
+</html>
+
